@@ -1,0 +1,297 @@
+<?php
+$current_page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
+$user_role = $_SESSION['role'] ?? 'Guest';
+
+require_once __DIR__ . '/approval_helper.php';
+
+// ── Due-today count for the sidebar badge ──────────────────────────────────
+if (isset($due_today) && is_array($due_today)) {
+    $sidebar_due_today_count = count($due_today);
+}
+else {
+    $sidebar_due_today_count = 0;
+    try {
+        require_once __DIR__ . '/../config/database.php';
+        $conn_sb = getConnection();
+        if ($conn_sb) {
+            $stmt_sb = $conn_sb->prepare("
+                SELECT COUNT(*) AS cnt
+                FROM loan_instalments li
+                LEFT JOIN loan_portfolio lp ON li.loan_id = lp.loan_id
+                WHERE li.status NOT IN ('Fully Paid')
+                  AND li.due_date = CURDATE()
+                  AND lp.loan_status NOT IN ('Closed', 'Written Off')
+            ");
+            if ($stmt_sb) {
+                $stmt_sb->execute();
+                $row_sb = $stmt_sb->get_result()->fetch_assoc();
+                $sidebar_due_today_count = (int)($row_sb['cnt'] ?? 0);
+                $stmt_sb->close();
+            }
+            $conn_sb->close();
+        }
+    }
+    catch (Exception $e) {
+    // Silent fail — never let a sidebar query break the page
+    }
+}
+
+// ── Role Permissions Check Helpers ──────────────────────────────────────────
+function canSeeAccounting($role)
+{
+    return in_array($role, ['Director', 'Accountant']);
+}
+function canSeeBusinessReports($role)
+{
+    return in_array($role, ['Director', 'MD', 'Accountant']);
+}
+function canSeeLoanManagement($role)
+{
+    return in_array($role, ['Director', 'MD', 'Secretary']);
+}
+function canSeeReports($role)
+{
+    return in_array($role, ['Director', 'MD']);
+}
+?>
+<nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-primary sidebar">
+    <div class="position-sticky pt-3">
+        <div class="sidebar-header text-center py-4">
+            <h5 class="text-white fw-bold">
+                <i class="bi bi-wallet2 fs-4 text-light"></i>
+                <span class="d-block mt-2" style="font-size: 0.95rem; letter-spacing: 0.5px; opacity: 0.95;">Grace Lending <span style="font-size: 0.8rem; font-weight: normal; opacity: 0.8;">SERVICES</span></span>
+            </h5>
+        </div>
+
+        <!-- ── Waving Hi Section ── -->
+        <div class="user-greeting text-center">
+            <div class="waving-icon mb-2">👋</div>
+            <div class="text-white small fw-bold mb-1">Hi, <?php echo htmlspecialchars($_SESSION['user_name'] ?? 'User'); ?></div>
+            <div class="badge bg-light text-primary rounded-pill px-3 py-1 mb-2" style="font-size: 0.65rem;">
+                <?php echo htmlspecialchars($user_role); ?>
+            </div>
+            
+            <!-- Typing Animation Container -->
+            <div class="typing-container">
+                <span id="typing-text"></span>
+            </div>
+
+            <div class="mt-1" style="font-size: 0.65rem; color: rgba(255,255,255,0.5);">
+                <i class="bi bi-circle-fill text-success" style="font-size: 0.45rem;"></i> System Active
+            </div>
+        </div>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textElement = document.getElementById('typing-text');
+            const messages = [
+                "Empowering financial success.",
+                "Excellence in portfolio management.",
+                "Precision in lending decisions.",
+                "Your partner in growth."
+            ];
+            let messageIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            let typeSpeed = 100;
+
+            function type() {
+                const currentMessage = messages[messageIndex];
+                
+                if (isDeleting) {
+                    textElement.textContent = currentMessage.substring(0, charIndex - 1);
+                    charIndex--;
+                    typeSpeed = 50;
+                } else {
+                    textElement.textContent = currentMessage.substring(0, charIndex + 1);
+                    charIndex++;
+                    typeSpeed = 100;
+                }
+
+                if (!isDeleting && charIndex === currentMessage.length) {
+                    isDeleting = true;
+                    typeSpeed = 2000; // Pause at end
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    messageIndex = (messageIndex + 1) % messages.length;
+                    typeSpeed = 500; // Pause before next word
+                }
+
+                setTimeout(type, typeSpeed);
+            }
+
+            type();
+        });
+        </script>
+        
+        <div class="px-2">
+            <ul class="nav flex-column">
+            <!-- ── Accounting System (Director & Accountant) ── -->
+            <?php if (canSeeAccounting($user_role)): ?>
+            <li class="nav-item">
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-2 mb-1 text-white-50">
+                    <span>Accounting System</span>
+                </h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo $current_page == 'ledger' ? 'active' : ''; ?>" href="?page=ledger">
+                    <i class="bi bi-journal-text me-2"></i> Ledger
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo $current_page == 'chart_of_accounts' ? 'active' : ''; ?>" href="?page=chart_of_accounts">
+                    <i class="bi bi-list-columns-reverse me-2"></i> Chart of Accounts
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo $current_page == 'expenses' ? 'active' : ''; ?>" href="?page=expenses">
+                    <i class="bi bi-wallet2 me-2"></i> Expenses
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo $current_page == 'assets' ? 'active' : ''; ?>" href="?page=assets">
+                    <i class="bi bi-safe2 me-2"></i> Assets
+                </a>
+            </li>
+            <?php
+endif; ?>
+
+            <!-- ── Business Reports (Director, MD, Accountant) ── -->
+            <?php if (canSeeBusinessReports($user_role)): ?>
+            <li class="nav-item mt-3">
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-white-50">
+                    <span>Business Reports</span>
+                </h6>
+                <a class="nav-link <?php echo $current_page == 'financial_report' ? 'active' : ''; ?>" href="?page=financial_report">
+                    <i class="bi bi-graph-up-arrow me-2"></i> Financial Reports
+                </a>
+            </li>
+            <?php
+endif; ?>
+
+            <!-- ── Loan Management (Director, MD, Secretary) ── -->
+            <?php if (canSeeLoanManagement($user_role)): ?>
+            <li class="nav-item mt-3">
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-white-50">
+                    <span>Loan Management</span>
+                </h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo $current_page == 'customers' ? 'active' : ''; ?>" href="?page=customers">
+                    <i class="bi bi-people me-2"></i> Customers
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo $current_page == 'loans' ? 'active' : ''; ?>" href="?page=loans">
+                    <i class="bi bi-cash-stack me-2"></i> Loans
+                </a>
+            </li>
+            <?php
+    $count_conn = getConnection();
+    $pending_count = 0;
+    if ($count_conn) {
+        $c_res = $count_conn->query("SELECT COUNT(*) as total FROM customers WHERE status = 'Pending' OR status = 'Action Required' OR client_resubmitted = 1");
+        if ($c_res)
+            $pending_count = $c_res->fetch_assoc()['total'];
+    }
+?>
+            <li class="nav-item">
+                <a class="nav-link <?php echo $current_page == 'pending_customers' ? 'active' : ''; ?>" href="?page=pending_customers">
+                    <i class="bi bi-clock-history me-2"></i> Requested Loans
+                    <?php if ($pending_count > 0): ?>
+                        <span class="badge bg-danger rounded-pill float-end"><?php echo $pending_count; ?></span>
+                    <?php
+    endif; ?>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo $current_page == 'rejected_customers' ? 'active' : ''; ?>" href="?page=rejected_customers">
+                    <i class="bi bi-person-x me-2"></i> Rejected Loans
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo $current_page == 'overdue' ? 'active' : ''; ?>" href="?page=overdue">
+                    <i class="bi bi-exclamation-octagon me-2"></i> Overdue Loans
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center justify-content-between <?php echo $current_page == 'notifications' ? 'active' : ''; ?>" href="?page=notifications">
+                    <span><i class="bi bi-bell me-2"></i> Notifications</span>
+                    <?php if ($sidebar_due_today_count > 0): ?>
+                        <span class="badge rounded-pill bg-danger" style="font-size:.68rem;min-width:20px;padding:3px 7px;">
+                            <?php echo $sidebar_due_today_count; ?>
+                        </span>
+                    <?php
+    endif; ?>
+                </a>
+            </li>
+            <?php
+endif; ?>
+
+            <!-- ── Reports (Director, MD) ── -->
+            <?php if (canSeeReports($user_role)): ?>
+            <li class="nav-item mt-3">
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-white-50">
+                    <span>Reports</span>
+                </h6>
+                <a class="nav-link <?php echo $current_page == 'reports' ? 'active' : ''; ?>" href="?page=reports">
+                    <i class="bi bi-file-earmark-bar-graph me-2"></i> Export Reports
+                </a>
+            </li>
+            <?php
+endif; ?>
+            
+            <!-- ── Approvals (Hide for Developer) ── -->
+            <?php if (strtolower($user_role) !== 'developer'):
+    $approval_conn = getConnection();
+    $pending_approvals_count = $approval_conn ? countPendingApprovals($approval_conn) : 0;
+    if ($approval_conn)
+        $approval_conn->close();
+?>
+                <li class="nav-item">
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-white-50">
+                        <span>Approvals</span>
+                    </h6>
+                    <a class="nav-link d-flex align-items-center justify-content-between <?php echo $current_page == 'approvals' ? 'active' : ''; ?>" href="?page=approvals">
+                        <span><i class="bi bi-shield-check me-2"></i> Approval Center</span>
+                        <?php if ($pending_approvals_count > 0): ?>
+                            <span class="badge rounded-pill bg-warning text-dark" style="font-size:.68rem;min-width:20px;padding:3px 7px;">
+                                <?php echo $pending_approvals_count; ?>
+                            </span>
+                        <?php
+    endif; ?>
+                    </a>
+                </li>
+            <?php
+endif; ?>
+
+            <?php if ($user_role === 'Developer'): ?>
+            <li class="nav-item mt-3">
+                <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-white-50">
+                    <span>Developer Tools</span>
+                </h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo $current_page == 'activity_logs' ? 'active' : ''; ?>" href="?page=activity_logs">
+                    <i class="bi bi-clock-history me-2"></i> Activity Logs
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo $current_page == 'user_management' ? 'active' : ''; ?>" href="?page=user_management">
+                    <i class="bi bi-people me-2"></i> User Management
+                </a>
+            </li>
+            <?php
+endif; ?>
+
+            <!-- ── SEPARATE RED LOGOUT BUTTON ── -->
+            <li class="nav-item mt-5 mb-4 px-3">
+                <a class="nav-link bg-danger text-white rounded-3 shadow d-flex align-items-center justify-content-center fw-bold border-0" 
+                   href="logout.php" 
+                   style="background-color: #dc3545 !important; color: white !important; padding: 12px !important;">
+                    <i class="bi bi-box-arrow-right me-2"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
