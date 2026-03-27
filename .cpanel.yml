@@ -1,6 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/cbfinance/public_html
+    - export DEPLOYPATH=/home/gracelending/public_html
     - /bin/cp -R * $DEPLOYPATH
-

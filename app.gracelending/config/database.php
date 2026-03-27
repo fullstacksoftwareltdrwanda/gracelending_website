@@ -21,8 +21,7 @@ else {
 function getConnection()
 {
     try {
-        $host = '127.0.0.1';
-        $conn = new mysqli($host, DB_USER, DB_PASS, DB_NAME);
+        $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
         if ($conn->connect_error) {
             throw new Exception("Connection failed: " . $conn->connect_error);
