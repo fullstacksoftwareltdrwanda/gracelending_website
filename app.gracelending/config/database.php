@@ -1,19 +1,21 @@
 <?php
 // Detect environment
-$is_local = ($_SERVER['REMOTE_ADDR'] === '127.0.0.1' || $_SERVER['REMOTE_ADDR'] === '::1' || $_SERVER['SERVER_NAME'] === 'localhost');
+// Detect environment
+$is_local = ($_SERVER['SERVER_NAME'] === 'localhost' || $_SERVER['REMOTE_ADDR'] === '127.0.0.1' || $_SERVER['REMOTE_ADDR'] === '::1');
+$is_hosted = (strpos($_SERVER['HTTP_HOST'], 'gracelendingservices.com') !== false);
 
-if ($is_local) {
+if (!$is_hosted && $is_local) {
     // Local XAMPP MySQL Configuration
     define('DB_HOST', 'localhost');
     define('DB_USER', 'root');
     define('DB_PASS', '');
-    define('DB_NAME', 'gracelending_db');
+    define('DB_NAME', 'gracelanding_db');
 }
 else {
     // Hosted Configuration
     define('DB_HOST', 'localhost');
-    define('DB_USER', 'gracelending_user');
-    define('DB_PASS', 'gracelending_pass');
+    define('DB_USER', 'gracelending_gracelending');
+    define('DB_PASS', 'WG7-BqF5r^Oi');
     define('DB_NAME', 'gracelending_gracelanding_db');
 }
 
