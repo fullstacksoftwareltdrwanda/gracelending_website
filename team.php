@@ -66,26 +66,26 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col md:flex-row items-center gap-16">
             <div class="flex-1">
-                <h3 class="text-3xl font-bold text-neutral-heading mb-8">Our Core Values</h3>
+                <h3 class="text-3xl font-bold text-primary-navy mb-8">Our Core Values</h3>
                 <div class="space-y-8">
                     <div class="flex items-start gap-5">
                         <div class="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center flex-shrink-0 text-primary-blue"><i class="fas fa-heart text-xl"></i></div>
                         <div>
-                            <h4 class="text-xl font-bold mb-2">Integrity</h4>
+                            <h4 class="text-xl font-bold mb-2 text-primary-navy">Integrity</h4>
                             <p class="text-gray-600">We uphold the highest standards of honesty and transparency in every transaction.</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-5">
                         <div class="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center flex-shrink-0 text-primary-green"><i class="fas fa-lightbulb text-xl"></i></div>
                         <div>
-                            <h4 class="text-xl font-bold mb-2">Innovation</h4>
+                            <h4 class="text-xl font-bold mb-2 text-primary-navy">Innovation</h4>
                             <p class="text-gray-600">Constantly seeking better ways to serve our clients through digital advancement.</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-5">
                         <div class="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center flex-shrink-0 text-primary-light"><i class="fas fa-users text-xl"></i></div>
                         <div>
-                            <h4 class="text-xl font-bold mb-2">Customer First</h4>
+                            <h4 class="text-xl font-bold mb-2 text-primary-navy">Customer First</h4>
                             <p class="text-gray-600">Our solutions are designed around your needs, not the other way around.</p>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                 <div class="bg-gray-100 rounded-[3rem] p-12 relative overflow-hidden">
                     <div class="relative z-10">
                         <i class="fas fa-quote-left text-5xl text-primary-coral mb-8 block opacity-30"></i>
-                        <p class="text-2xl font-medium text-neutral-body leading-relaxed mb-8 italic">
+                        <p class="text-2xl font-medium text-gray-800 leading-relaxed mb-8 italic">
                             "At Grace Lending Services, we believe that everyone deserves a bridge to their financial aspirations. Our team is dedicated to building those bridges with trust and technology."
                         </p>
                         <div class="flex items-center gap-4">
@@ -103,7 +103,7 @@
                                 <span class="text-xl font-bold text-white opacity-20">PR</span>
                             </div>
                             <div>
-                                <p class="font-bold text-neutral-heading">Patrick Rugamba</p>
+                                <p class="font-bold text-primary-navy">Patrick Rugamba</p>
                                 <p class="text-gray-500 text-sm">Managing Director</p>
                             </div>
                         </div>
