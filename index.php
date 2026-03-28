@@ -2,23 +2,31 @@
 <?php include 'includes/navbar.php'; ?>
 
 <!-- Hero Section -->
-<section class="min-h-screen flex items-center relative overflow-hidden pt-20">
+<section class="min-h-[80vh] flex items-start relative overflow-hidden pt-10 md:pt-16">
     <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-primary-dark/95 z-10"></div>
-        <img src="images/banner.jpg" class="w-full h-full object-cover" alt="Grace Lending Banner">
+        <div class="absolute inset-0 bg-primary-dark/80 z-10"></div>
+        <img src="images/banner.png" class="w-full h-full object-cover" alt="Grace Lending Banner">
     </div>
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
         <div class="max-w-3xl">
-            <h1 class="text-6xl md:text-8xl font-black text-neutral-heading mb-8 tracking-tighter leading-none animate-in">
+            <!-- Operating in Rwanda highlight -->
+            <div class="floating-badge bg-primary-coral/10 border border-primary-coral/20 backdrop-blur-md px-6 py-3 rounded-2xl inline-flex items-center gap-3 mb-6">
+                <div class="w-1.5 h-1.5 rounded-full bg-primary-coral animate-ping"></div>
+                <div class="typewriter-container">
+                    <p class="typewriter text-neutral-heading font-black text-[10px] uppercase tracking-[0.3em]">Operating in Rwanda</p>
+                </div>
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-black text-neutral-heading mb-6 tracking-tighter leading-none">
                 Smart Lending <br> <span class="text-primary-coral">Fast Capital</span>
             </h1>
-            <p class="text-lg md:text-xl text-neutral-body mb-12 max-w-xl font-medium leading-relaxed">
+            <p class="text-base md:text-lg text-neutral-body mb-8 max-w-xl font-medium leading-relaxed">
                 Empowering your financial future with tailored loan solutions. From personal needs to business expansion, we are your trusted partner.
             </p>
             <div class="flex flex-wrap gap-4">
-                <a href="apply.php" class="bg-primary-coral hover:bg-opacity-90 text-white px-10 py-5 rounded-2xl font-black text-xs tracking-widest transition-all shadow-2xl shadow-primary-coral/20">APPLY NOW</a>
-                <a href="services.php" class="bg-white/5 hover:bg-white/10 backdrop-blur-md text-white px-10 py-5 rounded-2xl font-black text-xs tracking-widest transition-all border border-white/10">OUR SERVICES</a>
+                <a href="apply.php" class="bg-primary-coral hover:bg-opacity-90 text-white px-8 py-4 rounded-2xl font-black text-[10px] tracking-widest transition-all shadow-2xl shadow-primary-coral/20">APPLY NOW</a>
+                <a href="services.php" class="bg-white/5 hover:bg-white/10 backdrop-blur-md text-white px-8 py-4 rounded-2xl font-black text-[10px] tracking-widest transition-all border border-white/10">OUR SERVICES</a>
             </div>
         </div>
     </div>

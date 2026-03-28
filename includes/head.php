@@ -106,6 +106,40 @@ function getCurrentPage() {
             color: white;
             border-color: #00A651;
         }
+
+        /* Typewriter Animation */
+        .typewriter-container {
+            display: inline-block;
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 0;
+            border-right: 3px solid #FF6B4A;
+            animation: 
+                typing 3s steps(30, end) infinite alternate,
+                blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #FF6B4A }
+        }
+
+        .floating-badge {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
     </style>
 </head>
 <body class="bg-neutral-bg">
