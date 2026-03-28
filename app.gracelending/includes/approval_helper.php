@@ -313,7 +313,7 @@ function executeApproval($conn, $approval) {
             _helper_createInstallmentSchedule(
                 $conn, $entity_id, $d['loan_number'], $d['disbursement_date'],
                 $d['number_of_instalments'], 1,
-                $d['total_disbursed'], $d['interest_rate'], $d['management_fee_rate'], true
+                $d['total_disbursed'], $d['interest_rate'], $d['management_fee_rate'], (bool)($d['deduct_fee'] ?? true)
             );
 
             // Additional update transaction

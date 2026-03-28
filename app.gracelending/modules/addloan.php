@@ -675,12 +675,36 @@ $form_topup_type = isset($_POST['topup_type'])  ? htmlspecialchars($_POST['topup
                                 <div class="invalid-feedback">Please enter a valid amount</div>
                             </div>
                         </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="loan_amount" class="form-label">Amount Given to Customer</label>
                                 <input type="text" class="form-control bg-light money-display" id="loan_amount"
                                        value="<?php echo formatMoney($default_loan_amount); ?>" readonly>
-                                <small class="text-muted">Actual cash given to customer</small>
+                                <small class="text-muted">Actual cash given to customer (Net amount)</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="cash_amount" class="form-label">Cash Amount</label>
+                                <input type="text" class="form-control money-input" id="cash_amount"
+                                       name="cash_amount"
+                                       value="<?php echo isset($_POST['cash_amount']) ? formatMoney(parseMoney($_POST['cash_amount'])) : '0'; ?>"
+                                       onkeyup="formatMoneyInput(this);"
+                                       data-original-value="<?php echo isset($_POST['cash_amount']) ? parseMoney($_POST['cash_amount']) : '0'; ?>">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="bank_amount" class="form-label">Bank Amount</label>
+                                <input type="text" class="form-control money-input" id="bank_amount"
+                                       name="bank_amount"
+                                       value="<?php echo isset($_POST['bank_amount']) ? formatMoney(parseMoney($_POST['bank_amount'])) : '0'; ?>"
+                                       onkeyup="formatMoneyInput(this);"
+                                       data-original-value="<?php echo isset($_POST['bank_amount']) ? parseMoney($_POST['bank_amount']) : '0'; ?>">
                             </div>
                         </div>
                     </div>
@@ -910,6 +934,28 @@ function validateTopup() {
         document.getElementById('topupTypeSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
         return false;
     }
+    
+    // Validate Cash and Bank amounts
+    const cashAmount = parseNumber(document.getElementById('cash_amount').value);
+    const bankAmount = parseNumber(document.getElementById('bank_amount').value);
+    const loanAmount = parseNumber(document.getElementById('loan_amount').value);
+    
+    if (Math.abs((cashAmount + bankAmount) - loanAmount) > 0.1) {
+        alert("Safe Accounting Check: The sum of Cash and Bank amounts (" + formatNumber(cashAmount + bankAmount) + ") must exactly match the 'Amount Given to Customer' (" + formatNumber(loanAmount) + ").");
+        return false;
+    }
+    
+    // Replace money inputs with integer values before submit
+    const moneyInputs = document.querySelectorAll('.money-input');
+    moneyInputs.forEach(input => {
+        const originalValue = input.getAttribute('data-original-value') || '0';
+        input.value = originalValue;
+    });
+
+    const submitBtn = document.querySelector('button[type="submit"]');
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+    submitBtn.disabled = true;
+
     return true;
 }
 
