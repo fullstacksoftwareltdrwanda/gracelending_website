@@ -858,7 +858,7 @@ $form_topup_type = isset($_POST['topup_type'])  ? htmlspecialchars($_POST['topup
                     </div>
                     
                     <div class="mt-3">
-                        <button type="submit" class="btn btn-primary" name="submit" onclick="return validateTopup()">
+                        <button type="submit" class="btn btn-primary" name="submit">
                             <i class="fas fa-plus-circle me-2"></i>Create Loan
                         </button>
                         <a href="index.php?page=loans" class="btn btn-secondary">
@@ -941,7 +941,7 @@ function validateTopup() {
     const loanAmount = parseNumber(document.getElementById('loan_amount').value);
     
     if (Math.abs((cashAmount + bankAmount) - loanAmount) > 0.1) {
-        alert("Safe Accounting Check: The sum of Cash and Bank amounts (" + formatNumber(cashAmount + bankAmount) + ") must exactly match the 'Amount Given to Customer' (" + formatNumber(loanAmount) + ").");
+        alert("Safe Accounting Check: The sum of Cash and Bank amounts (" + formatNumber(cashAmount + bankAmount) + ") must exactly match the 'Amount Given to Customer' (" + formatNumber(loanAmount) + "). Current sum: " + formatNumber(cashAmount + bankAmount) + " vs Expected: " + formatNumber(loanAmount));
         return false;
     }
     
@@ -953,11 +953,26 @@ function validateTopup() {
     });
 
     const submitBtn = document.querySelector('button[type="submit"]');
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
-    submitBtn.disabled = true;
+    
+    // Use a small timeout to let the form submission process start before disabling the button
+    // This prevents some browsers from canceling the request
+    setTimeout(() => {
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+        submitBtn.disabled = true;
+    }, 50);
 
     return true;
 }
+
+// Ensure the form uses the validation on submit
+document.addEventListener('DOMContentLoaded', function() {
+    const loanForm = document.getElementById('loanForm');
+    if (loanForm) {
+        loanForm.onsubmit = function() {
+            return validateTopup();
+        };
+    }
+});
 
 // -------------------------------------------------------
 // Money helpers
