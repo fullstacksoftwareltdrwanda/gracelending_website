@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Identity Hub | Grace Lending</title>
     <!-- Favicon Fix: Absolute URL for cross-subdomain compatibility -->
-    <link rel="icon" type="image/png" href="https://gracelending.rw/images/gracelandinglogo.png">
+    <link rel="icon" type="image/png" href="https://app.gracelendingservices.com/images/gracelandinglogo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
         }
         .login-side-image {
             flex: 1.3;
-            background: url('https://images.unsplash.com/photo-1554475900-0a0350e3fc7b?auto=format&fit=crop&q=80&w=2000') no-repeat center center;
+            background: url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=2000') no-repeat center center;
             background-size: cover;
             position: relative;
             display: none; /* Hidden on mobile */
@@ -291,7 +291,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
             </div>
         </div>
         <div class="login-side-content">
-            <a href="https://gracelending.rw" class="top-nav-link">
+            <a href="https://app.gracelendingservices.com" class="top-nav-link">
                 <i class="bi bi-arrow-left-short"></i> Main Website
             </a>
             
