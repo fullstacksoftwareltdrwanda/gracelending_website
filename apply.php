@@ -2,7 +2,7 @@
 require_once 'includes/db_connect.php';
 include 'includes/head.php';
 include 'includes/navbar.php';
-//7
+//
 $success = false;
 $error = "";
 $track_result = null;
@@ -205,7 +205,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['track_code'])) {
                                     <p class="text-[10px] text-neutral-body opacity-50 font-black uppercase tracking-widest">
                                         Applicant</p>
                                     <p class="text-lg font-black text-neutral-heading">
-                                        <?php echo htmlspecialchars($track_result['customer_name']); ?></p>
+                                        <?php echo htmlspecialchars($track_result['customer_name']); ?>
+                                    </p>
                                 </div>
                                 <span
                                     class="px-5 py-2 rounded-xl border font-black text-xs uppercase tracking-widest <?php echo $stat_color; ?>">
@@ -217,7 +218,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['track_code'])) {
                                     <p class="text-neutral-body opacity-40 uppercase tracking-widest text-[9px] mb-1">Ref Code
                                     </p>
                                     <p class="text-primary-coral font-black">
-                                        <?php echo htmlspecialchars($track_result['customer_code']); ?></p>
+                                        <?php echo htmlspecialchars($track_result['customer_code']); ?>
+                                    </p>
                                 </div>
                                 <div>
                                     <p class="text-neutral-body opacity-40 uppercase tracking-widest text-[9px] mb-1">Loan Type
@@ -227,7 +229,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['track_code'])) {
                                 <div>
                                     <p class="text-neutral-body opacity-40 uppercase tracking-widest text-[9px] mb-1">Amount</p>
                                     <p class="text-primary-coral">
-                                        <?php echo number_format($track_result['requested_amount']); ?> RWF</p>
+                                        <?php echo number_format($track_result['requested_amount']); ?> RWF
+                                    </p>
                                 </div>
                                 <div>
                                     <p class="text-neutral-body opacity-40 uppercase tracking-widest text-[9px] mb-1">Applied On
@@ -240,7 +243,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['track_code'])) {
                                     <p class="text-[9px] font-black uppercase tracking-widest text-sky-400 mb-2"><i
                                             class="fas fa-comment-alt mr-1"></i> Note from Grace Lending</p>
                                     <p class="text-sm text-sky-300 font-bold">
-                                        <?php echo htmlspecialchars($track_result['admin_note']); ?></p>
+                                        <?php echo htmlspecialchars($track_result['admin_note']); ?>
+                                    </p>
                                     <?php if (!empty($track_result['correction_fields'])): ?>
                                         <p class="text-[10px] mt-2 text-sky-400 opacity-70 font-bold uppercase tracking-widest">Fields
                                             to update:
