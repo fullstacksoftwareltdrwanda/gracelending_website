@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
             height: 100%;
             margin: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 15px; /* Scaled UI to 85% */
+            font-size: 14px; /* Reduced from 15px to make it feel more compact */
             overflow: hidden;
             background: #f8fafc;
         }
@@ -114,15 +114,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 40px;
-            border-radius: 30px;
+            padding: 30px; /* Reduced from 40px */
+            border-radius: 24px; /* Slightly smaller radius */
             color: white;
             max-width: 450px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
         .glass-panel h3 {
             font-weight: 800;
-            font-size: 2.2rem;
+            font-size: 1.8rem; /* Reduced from 2.2rem */
             margin-bottom: 0;
             letter-spacing: -1px;
         }
@@ -132,14 +132,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px;
+            padding: 30px; /* Reduced from 40px */
             background: #ffffff;
             position: relative;
         }
         .top-nav-link {
             position: absolute;
-            top: 40px;
-            right: 40px;
+            top: 30px; /* Reduced from 40px */
+            right: 30px; /* Reduced from 40px */
             display: inline-flex;
             align-items: center;
             padding: 10px 20px;
@@ -159,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
         }
         .login-container {
             width: 100%;
-            max-width: 380px; /* Reduced from 440px/400px */
+            max-width: 340px; /* Reduced from 380px */
             animation: fadeIn 0.6s ease-out;
         }
         @keyframes fadeIn {
@@ -167,29 +167,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
             to { opacity: 1; transform: translateY(0); }
         }
         .logo-box {
-            width: 54px;
-            height: 54px;
+            width: 46px; /* Reduced from 54px */
+            height: 46px; /* Reduced from 54px */
             background: linear-gradient(135deg, var(--primary), #3b82f6);
-            border-radius: 16px;
+            border-radius: 12px; /* Reduced from 16px */
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 24px;
+            margin-bottom: 18px; /* Reduced from 24px */
             box-shadow: 0 10px 25px rgba(30, 64, 175, 0.25);
         }
         .login-header h2 {
             font-weight: 800;
             color: #0f172a;
-            font-size: 1.7rem;
-            margin-bottom: 8px;
+            font-size: 1.5rem; /* Reduced from 1.7rem */
+            margin-bottom: 6px; /* Reduced from 8px */
             letter-spacing: -0.02em;
             line-height: 1.25;
         }
         .login-header p {
             color: #64748b;
-            margin-bottom: 30px;
+            margin-bottom: 24px; /* Reduced from 30px */
             font-weight: 500;
-            font-size: 0.95rem;
+            font-size: 0.85rem; /* Reduced from 0.95rem */
         }
         .form-label {
             font-weight: 700;
@@ -205,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
             transition: all 0.3s;
             background: #f8fafc;
             overflow: hidden;
-            padding: 2px;
+            padding: 1px; /* Reduced from 2px */
         }
         .input-group:focus-within {
             border-color: var(--primary);
@@ -216,13 +216,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
             background: transparent;
             border: none;
             color: #94a3b8;
-            padding-left: 18px;
+            padding-left: 14px; /* Reduced from 18px */
         }
         .form-control {
             border: none;
-            padding: 14px 18px;
+            padding: 10px 14px; /* Reduced from 14px 18px */
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.85rem; /* Reduced from 0.95rem */
             background: transparent;
         }
         .form-control:focus {
@@ -233,12 +233,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border: none;
-            padding: 16px;
-            border-radius: 16px;
+            padding: 12px; /* Reduced from 16px */
+            border-radius: 12px; /* Reduced from 16px */
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.9rem; /* Reduced from 1rem */
             width: 100%;
-            margin-top: 15px;
+            margin-top: 10px; /* Reduced from 15px */
             transition: all 0.3s;
             box-shadow: 0 10px 20px rgba(30, 64, 175, 0.2);
         }
@@ -249,9 +249,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
         }
         .footer-branding {
             position: absolute;
-            bottom: 40px;
+            bottom: 30px; /* Reduced from 40px */
             color: #94a3b8;
-            font-size: 0.85rem;
+            font-size: 0.75rem; /* Reduced from 0.85rem */
             font-weight: 500;
             letter-spacing: 0.05em;
         }
@@ -285,8 +285,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
             <div class="glass-panel">
                 <h3>Grace Lending</h3>
                 <div class="mt-2">
-                    <p style="font-weight: 700; font-size: 1.05rem; margin-bottom: 5px;">Trusted Financial Partner</p>
-                    <p style="font-size: 1.15rem; line-height: 1.4;">Empowering Your<br>Financial Journey</p>
+                    <p style="font-weight: 700; font-size: 0.95rem; margin-bottom: 5px;">Trusted Financial Partner</p>
+                    <p style="font-size: 1.05rem; line-height: 1.4;">Empowering Your<br>Financial Journey</p>
                 </div>
             </div>
         </div>
@@ -297,7 +297,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
             
             <div class="login-container">
                 <div class="logo-box">
-                    <i class="bi bi-shield-lock-fill text-white fs-3"></i>
+                    <i class="bi bi-shield-lock-fill text-white fs-4"></i> <!-- fs-3 to fs-4 -->
                 </div>
                 <div class="login-header">
                     <h2>Welcome back to your Accounting Loan MS</h2>
