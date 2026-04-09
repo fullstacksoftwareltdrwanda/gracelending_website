@@ -62,8 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Identity Hub | gracelending</title>
-    <link rel="icon" type="image/png" href="../images/gracelending LOGO.png">
+    <title>Identity Hub | Grace Lending</title>
+    <!-- Favicon Fix: Absolute URL for cross-subdomain compatibility -->
+    <link rel="icon" type="image/png" href="https://gracelending.rw/images/gracelandinglogo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -72,13 +73,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
             --primary: #1e40af;
             --primary-dark: #1e3a8a;
             --accent: #10b981;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.3);
         }
         body, html {
             height: 100%;
             margin: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 15px; /* Scaled UI to 85% */
             overflow: hidden;
-            background: #fff;
+            background: #f8fafc;
         }
         .login-wrapper {
             display: flex;
@@ -86,20 +90,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
             width: 100%;
         }
         .login-side-image {
-            flex: 1.2;
-            background: url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=2000') no-repeat center center;
+            flex: 1.3;
+            background: url('https://images.unsplash.com/photo-1554475900-0a0350e3fc7b?auto=format&fit=crop&q=80&w=2000') no-repeat center center;
             background-size: cover;
             position: relative;
             display: none; /* Hidden on mobile */
+            padding: 60px;
+            align-items: flex-end;
         }
         @media (min-width: 992px) {
-            .login-side-image { display: block; }
+            .login-side-image { display: flex; }
         }
         .login-side-image::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to right, rgba(30, 64, 175, 0.4), rgba(30, 64, 175, 0.1));
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.45), rgba(0, 0, 0, 0.2));
+        }
+        .glass-panel {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 30px;
+            color: white;
+            max-width: 450px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .glass-panel h3 {
+            font-weight: 800;
+            font-size: 2.2rem;
+            margin-bottom: 0;
+            letter-spacing: -1px;
         }
         .login-side-content {
             flex: 1;
@@ -108,66 +133,94 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
             justify-content: center;
             align-items: center;
             padding: 40px;
-            background: #fff;
+            background: #ffffff;
             position: relative;
+        }
+        .top-nav-link {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 20px;
+            background: #f1f5f9;
+            color: #475569;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+        .top-nav-link:hover {
+            background: #e2e8f0;
+            color: var(--primary);
+            transform: translateY(-2px);
         }
         .login-container {
             width: 100%;
-            max-width: 400px;
+            max-width: 380px; /* Reduced from 440px/400px */
+            animation: fadeIn 0.6s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .logo-box {
-            width: 50px;
-            height: 50px;
-            background: var(--primary);
-            border-radius: 15px;
+            width: 54px;
+            height: 54px;
+            background: linear-gradient(135deg, var(--primary), #3b82f6);
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 16px;
-            box-shadow: 0 10px 20px rgba(30, 64, 175, 0.2);
+            margin-bottom: 24px;
+            box-shadow: 0 10px 25px rgba(30, 64, 175, 0.25);
         }
         .login-header h2 {
             font-weight: 800;
-            color: #111827;
-            font-size: 1.6rem;
-            margin-bottom: 4px;
-            letter-spacing: -0.025em;
+            color: #0f172a;
+            font-size: 1.7rem;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+            line-height: 1.25;
         }
         .login-header p {
-            color: #6b7280;
-            margin-bottom: 20px;
+            color: #64748b;
+            margin-bottom: 30px;
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
         .form-label {
             font-weight: 700;
-            color: #374151;
+            color: #334155;
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         .input-group {
-            border: 2px solid #f3f4f6;
-            border-radius: 14px;
-            transition: all 0.2s;
-            background: #f9fafb;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            transition: all 0.3s;
+            background: #f8fafc;
             overflow: hidden;
+            padding: 2px;
         }
         .input-group:focus-within {
             border-color: var(--primary);
             background: #fff;
-            box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.05);
+            box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.1);
         }
         .input-group-text {
             background: transparent;
             border: none;
-            color: #9ca3af;
-            padding-left: 16px;
+            color: #94a3b8;
+            padding-left: 18px;
         }
         .form-control {
             border: none;
-            padding: 12px 16px;
+            padding: 14px 18px;
             font-weight: 600;
             font-size: 0.95rem;
             background: transparent;
@@ -177,76 +230,82 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
             background: transparent;
         }
         .btn-login {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border: none;
-            padding: 14px;
-            border-radius: 14px;
+            padding: 16px;
+            border-radius: 16px;
             font-weight: 700;
+            font-size: 1rem;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 15px;
             transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.2);
+            box-shadow: 0 10px 20px rgba(30, 64, 175, 0.2);
         }
         .btn-login:hover {
-            background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(30, 64, 175, 0.3);
+            box-shadow: 0 15px 30px rgba(30, 64, 175, 0.3);
+            color: white;
         }
-        .back-link {
-            margin-top: 20px;
-            display: inline-flex;
-            align-items: center;
-            color: #6b7280;
-            text-decoration: none;
-            font-weight: 700;
+        .footer-branding {
+            position: absolute;
+            bottom: 40px;
+            color: #94a3b8;
             font-size: 0.85rem;
-            transition: all 0.2s;
+            font-weight: 500;
+            letter-spacing: 0.05em;
         }
-        .back-link:hover {
-            color: var(--primary);
-        }
-        .back-link i {
-            margin-right: 8px;
-            transition: transform 0.2s;
-        }
-        .back-link:hover i {
-            transform: translateX(-4px);
+        .footer-branding span {
+            color: #475569;
+            font-weight: 700;
         }
         .alert {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 600;
-            border-radius: 12px;
-            padding: 12px;
+            border-radius: 14px;
+            padding: 14px;
             border: none;
-            background: #fee2e2;
-            color: #991b1b;
             margin-top: 20px;
         }
-        .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+        .alert-danger { background: #fff1f2; color: #e11d48; }
+        .alert-success { background: #f0fdf4; color: #16a34a; }
+        
         @keyframes shake {
             10%, 90% { transform: translate3d(-1px, 0, 0); }
             20%, 80% { transform: translate3d(2px, 0, 0); }
             30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
             40%, 60% { transform: translate3d(4px, 0, 0); }
         }
+        .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
     </style>
 </head>
 <body>
     <div class="login-wrapper">
-        <div class="login-side-image"></div>
+        <div class="login-side-image">
+            <div class="glass-panel">
+                <h3>Grace Lending</h3>
+                <div class="mt-2">
+                    <p style="font-weight: 700; font-size: 1.05rem; margin-bottom: 5px;">Trusted Financial Partner</p>
+                    <p style="font-size: 1.15rem; line-height: 1.4;">Empowering Your<br>Financial Journey</p>
+                </div>
+            </div>
+        </div>
         <div class="login-side-content">
+            <a href="https://gracelending.rw" class="top-nav-link">
+                <i class="bi bi-arrow-left-short"></i> Main Website
+            </a>
+            
             <div class="login-container">
                 <div class="logo-box">
                     <i class="bi bi-shield-lock-fill text-white fs-3"></i>
                 </div>
                 <div class="login-header">
-                    <h2>Welcome back</h2>
-                    <p>Enter your details to access the portal</p>
+                    <h2>Welcome back to your Accounting Loan MS</h2>
+                    <p>Enter your credentials to securely access your portal</p>
                 </div>
                 
                 <form id="loginForm" method="POST">
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label class="form-label">Username / Email</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
@@ -254,7 +313,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
                         </div>
                     </div>
                     
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label class="form-label">Password</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-key-fill"></i></span>
@@ -274,21 +333,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
                     </button>
                     
                     <?php if ($login_error === true && $_SERVER['REQUEST_METHOD'] === 'POST'): ?>
-                    <div class="alert" id="errorAlert">
+                    <div class="alert alert-danger shake" id="errorAlert">
                         <i class="bi bi-exclamation-circle-fill me-2"></i> Invalid credentials.
                     </div>
                     <?php endif; ?>
 
                     <?php if (isset($_GET['logout']) && $_GET['logout'] === 'success'): ?>
-                    <div class="alert alert-success bg-success-subtle text-success border-0" id="logoutAlert">
+                    <div class="alert alert-success" id="logoutAlert">
                         <i class="bi bi-check-circle-fill me-2"></i> Logged out successfully.
                     </div>
                     <?php endif; ?>
                 </form>
+            </div>
 
-                <a href="../" class="back-link">
-                    <i class="bi bi-arrow-left"></i> Back to main website
-                </a>
+            <div class="footer-branding">
+                powered by <span>Fullstack LTD</span>
             </div>
         </div>
     </div>
@@ -305,4 +364,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset(
         }
     </script>
 </body>
-</html>
+</html>

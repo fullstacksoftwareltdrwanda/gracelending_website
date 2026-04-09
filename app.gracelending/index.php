@@ -239,7 +239,7 @@ p, .form-label, .small {
     <title>Accounting & Loan Management System</title>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="../images/gracelending LOGO.png">
+    <link rel="icon" type="image/png" href="https://gracelending.rw/images/gracelandinglogo.png">
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
