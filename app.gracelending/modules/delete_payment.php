@@ -108,10 +108,11 @@ try {
         $beg_bal = floatval($pmt['beginning_balance'] ?? 0);
         $total_paid_to_loan = $amount - $penalty_paid;
 
-        if ($beg_bal > 0 && $total_paid_to_loan > $beg_bal + 1) { // +1 for rounding buffer
+        if (false) { // Disabled recalculateRemainingSchedule to preserve fixed schedule
+            $current_inst_num = intval($inst_check['instalment_number']);
             recalculateRemainingSchedule($conn, $loan_id, $current_inst_num, $new_closing, $interest_rate, $mgmt_fee_rate);
         } else {
-            // No recalculation needed; just sync portfolio to reflect the reversed principal/interest
+            // No recalculation needed for fixed schedules; just sync portfolio to reflect the reversed principal/interest
             syncLoanPortfolio($conn, $loan_id);
         }
     }
