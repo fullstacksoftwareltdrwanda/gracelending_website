@@ -724,7 +724,22 @@ try {
                         // Rounding tolerance
                         if ($new_bal_rem > 0 && $new_bal_rem < 1.0) $new_bal_rem = 0;
 
-                        $new_status = ($new_bal_rem <= 0) ? 'Fully Paid' : (($allocation_for_this_row > 0 || floatval($inst_row['paid_amount']) > 0) ? 'Partially Paid' : 'Pending');
+                        $total_paid_on_this_inst = floatval($inst_row['paid_amount']) + $allocation_for_this_row;
+                        $scheduled_total_payment = floatval($inst_row['total_payment']);
+
+                        if ($new_bal_rem <= 0) {
+                            if ($total_paid_on_this_inst > $scheduled_total_payment + 10) { // Using 10 RWF as a small tolerance
+                                $new_status = 'Overpaid';
+                            } else {
+                                $new_status = 'Fully Paid';
+                            }
+                        }
+                        elseif ($total_paid_on_this_inst > 0) {
+                            $new_status = 'Partially Paid';
+                        }
+                        else {
+                            $new_status = 'Pending';
+                        }
                         
                         // Calculate closing balance for this row (Opening - Total Principal Paid so far)
                         $updated_closing = max(0, floatval($inst_row['opening_balance']) - (floatval($inst_row['principal_paid']) + $p_paid));
@@ -921,6 +936,7 @@ $mgmt_fee_rate_label = formatRateLabel($mgmt_fee_rate_pct);
             border-bottom: 1px solid #e9ecef;
         }
         .status-fully-paid    { background-color: #d4edda !important; }
+        .status-overpaid     { background-color: #e8e4f8 !important; color: #4a2aab !important; }
         .status-partially-paid{ background-color: #fff3cd !important; }
         .status-pending       { background-color: #ffffff !important; }
         tbody tr:hover { opacity: 0.9; }
@@ -1268,6 +1284,8 @@ endif; ?>
 
         if ($status === 'Fully Paid')
             $row_class = 'status-fully-paid';
+        elseif ($status === 'Overpaid')
+            $row_class = 'status-overpaid';
         elseif ($status === 'Partially Paid')
             $row_class = 'status-partially-paid';
         else
@@ -1326,6 +1344,7 @@ endif; ?>
                                 <div class="mt-2">
                                     <small class="text-muted d-block">
                                         <span class="badge" style="background-color:#d4edda;color:#155724;">■</span> Fully Paid
+                                        <span class="badge ms-2" style="background-color:#e8e4f8;color:#4a2aab;">■</span> Overpaid
                                         <span class="badge ms-2" style="background-color:#fff3cd;color:#856404;">■</span> Partially Paid
                                         <span class="badge ms-2" style="background-color:#ffffff;color:#000;border:1px solid #dee2e6;">■</span> Pending
                                     </small>

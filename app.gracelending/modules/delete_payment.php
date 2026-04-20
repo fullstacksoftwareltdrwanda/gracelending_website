@@ -75,6 +75,8 @@ try {
         // Re-determine status
         if ($new_paid <= 0.01) {
             $new_status = 'Pending';
+        } elseif ($new_paid > $total_due + 10) { // Tolerance for overpayment
+            $new_status = 'Overpaid';
         } elseif ($new_paid >= $total_due - 0.01) {
             $new_status = 'Fully Paid';
         } else {

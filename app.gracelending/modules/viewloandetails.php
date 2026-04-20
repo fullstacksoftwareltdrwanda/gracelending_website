@@ -482,6 +482,7 @@ body { font-size: 12px !important; background: #f4f6fb; }
 
 /* Instalment row colours */
 .inst-ontime  > td { background:#e8f5e9!important; }
+.inst-overpaid > td { background:#e8e4f8!important; color:#4a2aab!important; }
 .inst-late    > td { background:#fff8e1!important; }
 .inst-missed  > td { background:#ffebee!important; }
 .inst-pending > td { background:#f3f4f6!important; }
@@ -1156,11 +1157,15 @@ body { font-size: 12px !important; background: #f4f6fb; }
                             else                             $inst_row_class = 'inst-pending';
 
                             $ist = strtolower(isset($inst['payment_status']) ? $inst['payment_status'] : '');
-                            if ($ist === 'paid')          $ibc = 'success';
+                            if ($ist === 'paid' || $ist === 'fully paid')          $ibc = 'success';
+                            elseif ($ist === 'overpaid')  $ibc = 'indigo'; // Custom color helper or specific style
                             elseif ($ist === 'overdue')   $ibc = 'danger';
-                            elseif ($ist === 'partial')   $ibc = 'warning';
+                            elseif ($ist === 'partial' || $ist === 'partially paid')   $ibc = 'warning';
                             elseif ($ist === 'pending')   $ibc = 'info';
                             else                          $ibc = 'secondary';
+                            
+                            // Re-map indigo for bootstrap if needed or use hex
+                            $ibc_style = ($ist === 'overpaid') ? 'background-color:#e8e4f8;color:#4a2aab;' : '';
                             $ibc_text = ($ibc === 'warning') ? 'text-dark' : '';
 
                             // Accurate days late
@@ -1187,7 +1192,7 @@ body { font-size: 12px !important; background: #f4f6fb; }
                             elseif ($inst_cls === 'missed')$cls_html= '<span class="badge bg-danger">Missed</span>';
                             else                          $cls_html = '<span class="badge bg-light text-dark border">Pending</span>';
                         ?>
-                        <tr class="<?php echo $inst_row_class; ?>">
+                        <tr class="<?php echo $inst_row_class; ?> <?php echo ($ist === 'overpaid') ? 'inst-overpaid' : ''; ?>">
                             <td class="fw-bold"><?php echo isset($inst['instalment_number']) ? $inst['instalment_number'] : ''; ?></td>
                             <td><strong><?php echo fmtDate($i_due_date); ?></strong></td>
                             <td class="text-end"><?php echo number_format(isset($inst['principal_amount']) ? $inst['principal_amount'] : 0,2); ?></td>
@@ -1207,7 +1212,7 @@ body { font-size: 12px !important; background: #f4f6fb; }
                                 <?php endif; ?>
                             </td>
                             <td class="text-center">
-                                <span class="badge bg-<?php echo $ibc; ?> <?php echo $ibc_text; ?>">
+                                <span class="badge bg-<?php echo $ibc; ?> <?php echo $ibc_text; ?>" style="<?php echo $ibc_style; ?>">
                                     <?php echo ucfirst(isset($inst['payment_status']) ? $inst['payment_status'] : ''); ?>
                                 </span>
                             </td>
@@ -1230,6 +1235,7 @@ body { font-size: 12px !important; background: #f4f6fb; }
                 <div class="d-flex gap-2 flex-wrap mt-2 align-items-center">
                     <small class="text-muted fw-bold">Row colours:</small>
                     <span style="background:#e8f5e9;padding:2px 8px;border-radius:4px;font-size:.67rem;">On-Time (paid &le; due date)</span>
+                    <span style="background:#e8e4f8;color:#4a2aab;padding:2px 8px;border-radius:4px;font-size:.67rem;">Overpaid</span>
                     <span style="background:#fff8e1;padding:2px 8px;border-radius:4px;font-size:.67rem;">Late (paid after due / partial)</span>
                     <span style="background:#ffebee;padding:2px 8px;border-radius:4px;font-size:.67rem;">Missed (unpaid &amp; past due)</span>
                     <span style="background:#f3f4f6;padding:2px 8px;border-radius:4px;font-size:.67rem;">Pending</span>
